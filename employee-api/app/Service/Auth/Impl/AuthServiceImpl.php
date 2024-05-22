@@ -1,17 +1,31 @@
 <?php
 
-namespace app\Service\Auth\Impl;
+namespace App\Service\Auth\Impl;
 
-use app\Service\Auth\AuthService;
-use app\Service\Auth\LoginData;
-use app\Service\Auth\SaveData;
+use App\Http\DataTransferObjects\Auth\LoginData;
+use App\Http\DataTransferObjects\User\GetData;
+use App\Http\DataTransferObjects\User\SaveData;
+use App\Service\Auth\AuthService;
+use App\Service\User\UserService;
+use Illuminate\Support\Facades\Hash;
+
+//use App\Service\Auth\SaveData;
 
 class AuthServiceImpl implements AuthService
 {
 
+    public function __construct(protected UserService $userService)
+    {
+    }
+
     public function register(SaveData $data): array
     {
-        // TODO: Implement register() method.
+        $user =  $this->userService->create($data);
+        $token = $this->generateAuthenticationToken($user);
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
     }
 
     public function getUser(): mixed
@@ -21,16 +35,25 @@ class AuthServiceImpl implements AuthService
 
     public function login(LoginData $data): array
     {
-        // TODO: Implement login() method.
+        $user = $this->userService->get(GetData::from(['email' => $data->email]));
+        if(!Hash::check($data->password, $user->password)){
+            abort(422, "Datos incorrectos");
+        }
+        $token = $this->generateAuthenticationToken($user);
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
     }
 
     public function removeAuthenticationToken(mixed $user): void
     {
-        // TODO: Implement removeAuthenticationToken() method.
+        $user->currentAccessToken()->delete();
     }
 
     public function generateAuthenticationToken(mixed $user): string
     {
-        // TODO: Implement generateAuthenticationToken() method.
+        $user->tokens()->whereName('api-token')->delete();
+        return $user->createToken('api-token')->plainTextToken;
     }
 }

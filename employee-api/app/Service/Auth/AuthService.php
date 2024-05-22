@@ -1,10 +1,12 @@
 <?php
 
-namespace app\Service\Auth;
+namespace App\Service\Auth;
+
+use App\Http\DataTransferObjects\Auth\LoginData;
 
 interface AuthService
 {
-    public function register(SaveData $data): array;
+    //public function register(SaveData $data): array;
 
     public function getUser(): mixed;
 
