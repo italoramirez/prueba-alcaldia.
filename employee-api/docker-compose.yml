@@ -1,0 +1,60 @@
+version: "3.8"
+name: employee-api
+x-logging: &default-logging
+  options:
+    max-size: "100m"
+    max-file: "5"
+  driver: json-file
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www/html
+    container_name: prueba-api
+    environment:
+      - XDG_CONFIG_HOME=/some/writeable/directory
+    restart: unless-stopped
+    logging: *default-logging
+    volumes:
+      - ../employee-api:/var/www/html
+    ports:
+      - "9000:80"
+    networks:
+      - app-net
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    container_name: test-nginx
+    logging: *default-logging
+    volumes:
+      - ../employee-api:/var/www/html
+      - ./nginx:/etc/nginx/conf.d/
+    ports:
+      - "8000:80"
+    networks:
+      - app-net
+    depends_on:
+      - php
+
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    container_name: test-mysql
+    logging: *default-logging
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: employee
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      #MYSQL_PASSWORD: 12345
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+        - "3306:3306"
+    networks:
+        - app-net
+networks:
+  app-net:
+    driver: bridge
+    name: app-net
