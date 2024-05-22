@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Departments\DepartmentsController;
+use App\Http\Controllers\User\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +27,15 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'getUser']);
-
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/list', [UsersController::class, 'getAllWithPaginate']);
+        Route::put('/{id}', [UsersController::class, 'update']);
+        Route::get('/{id}', [UsersController::class, 'show']);
+    });
+    Route::group(['prefix' => 'department'], function () {
+        Route::get('', [DepartmentsController::class, 'index']);
+        Route::put('/{id}', [DepartmentsController::class, 'update']);
+        Route::post('', [DepartmentsController::class, 'store']);
+        Route::delete('/{id}', [DepartmentsController::class, 'destroy']);
+    });
 });
