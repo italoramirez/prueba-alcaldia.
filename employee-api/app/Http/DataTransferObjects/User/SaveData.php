@@ -13,7 +13,8 @@ class SaveData extends Data
         public string $last_name,
         public string $address,
         public string $phone,
-        public string $password
+        public string $password,
+        public string $department_id
     )
     {
     }
@@ -29,7 +30,8 @@ class SaveData extends Data
             'last_name' => 'required|max:255',
             'address' => 'required|max:255',
             'phone' => 'required|max:30',
-            'password' => 'required|min:3|max:15'
+            'password' => 'required|min:3|max:15',
+            'department_id' => 'required|int'
         ];
     }
 
