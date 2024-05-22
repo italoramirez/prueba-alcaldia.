@@ -11,7 +11,7 @@ class UserRepositoryImpl implements UserRepository
 
     public function get($data): null|User|Model
     {
-        return User::with('roles.permissions')->whereEmail($data->email)
+        return User::whereEmail($data->email)
             ->firstOrFail();
     }
 
