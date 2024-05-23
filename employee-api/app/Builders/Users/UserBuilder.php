@@ -24,7 +24,12 @@ class UserBuilder extends Builder
     public function whereDepartmentById(?int $departmentId): self
     {
         return $this->when(isset($departmentId), function ($q) use ($departmentId) {
-            $q->where('department_id', 'like', '%' . $departmentId . '%');
+            $q->whereHas('department', function ($q2) use ($departmentId) {
+                $q2->where('id', $departmentId);
+            });
+        });
+        return $this->when(isset($departmentId), function ($q) use ($departmentId) {
+            $q->where('department_id', $departmentId);
         });
     }
 }
