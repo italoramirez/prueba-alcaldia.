@@ -28,14 +28,9 @@ class AuthServiceImpl implements AuthService
         ];
     }
 
-    public function getUser(): mixed
-    {
-        // TODO: Implement getUser() method.
-    }
-
     public function login(LoginData $data): array
     {
-        $user = $this->userService->get(GetData::from(['email' => $data->email]));
+        $user = $this->userService->get($data);
         if(!Hash::check($data->password, $user->password)){
             abort(422, "Datos incorrectos");
         }

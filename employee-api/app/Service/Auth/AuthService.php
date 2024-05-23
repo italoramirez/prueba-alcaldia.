@@ -3,16 +3,31 @@
 namespace App\Service\Auth;
 
 use App\Http\DataTransferObjects\Auth\LoginData;
+use App\Http\DataTransferObjects\User\SaveData;
 
 interface AuthService
 {
-    //public function register(SaveData $data): array;
+    /**
+     * @param SaveData $data
+     * @return array
+     */
+    public function register(SaveData $data): array;
 
-    public function getUser(): mixed;
-
+    /**
+     * @param LoginData $data
+     * @return array
+     */
     public function login(LoginData $data): array;
 
+    /**
+     * @param mixed $user
+     * @return void
+     */
     public function removeAuthenticationToken(mixed $user): void;
 
+    /**
+     * @param mixed $user
+     * @return string
+     */
     public function generateAuthenticationToken(mixed $user): string;
 }
