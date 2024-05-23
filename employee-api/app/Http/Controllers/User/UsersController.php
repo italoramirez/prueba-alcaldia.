@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\DataTransferObjects\User\GetData;
 use App\Http\DataTransferObjects\User\SaveData;
+use App\Http\DataTransferObjects\User\UpdateData;
 use App\Models\User;
 use App\Service\User\UserService;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, int $id): User
     {
-        return $this->userService->update(SaveData::from($request->all()), $id);
+        return $this->userService->update(UpdateData::from($request->all()), $id);
     }
 
     public function show(int $id): User

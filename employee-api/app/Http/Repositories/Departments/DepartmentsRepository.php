@@ -6,6 +6,7 @@ use App\Http\DataTransferObjects\Departments\DepartmentsData;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 interface DepartmentsRepository
 {
@@ -16,9 +17,9 @@ interface DepartmentsRepository
     public function save(DepartmentsData $data): Department;
 
     /**
-     * @return Collection|Model
+     * @return Collection
      */
-    public function getAll(): Collection|Model;
+    public function getAll(): Collection;
 
     public function update(DepartmentsData $data, int $id): Model;
 

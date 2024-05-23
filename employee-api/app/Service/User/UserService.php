@@ -2,8 +2,10 @@
 
 namespace App\Service\User;
 
+use App\Http\DataTransferObjects\Auth\LoginData;
 use App\Http\DataTransferObjects\User\GetData;
 use App\Http\DataTransferObjects\User\SaveData;
+use App\Http\DataTransferObjects\User\UpdateData;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -16,10 +18,10 @@ interface UserService
     public function create(SaveData $data): User;
 
     /**
-     * @param GetData $data
+     * @param LoginData $data
      * @return User|null
      */
-    public function get(GetData $data): ?User;
+    public function get(LoginData $data): ?User;
 
     /**
      * @param GetData $getData
@@ -28,11 +30,11 @@ interface UserService
     public function getUserWithPaginate(GetData $getData): LengthAwarePaginator;
 
     /**
-     * @param SaveData $saveData
+     * @param UpdateData $saveData
      * @param int $id
      * @return User
      */
-    public function update(SaveData $saveData, int $id): User;
+    public function update(UpdateData $saveData, int $id): User;
 
     public function getUser(int $id): User;
 }

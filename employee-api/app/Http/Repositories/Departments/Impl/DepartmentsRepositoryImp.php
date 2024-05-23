@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 class DepartmentsRepositoryImp implements DepartmentsRepository
 {
 
+    /**
+     * @param DepartmentsData $data
+     * @return Department
+     */
     public function save(DepartmentsData $data): Department
     {
         $department = new Department();
@@ -19,11 +23,19 @@ class DepartmentsRepositoryImp implements DepartmentsRepository
         return $department;
     }
 
-    public function getAll(): Model|Collection
+    /**
+     * @return Collection
+     */
+    public function getAll(): Collection
     {
-        return Department::select(['id', 'name'])->get();
+        return Department::all(['id', 'name']);
     }
 
+    /**
+     * @param DepartmentsData $data
+     * @param int $id
+     * @return Model
+     */
     public function update(DepartmentsData $data, int $id): Model
     {
         $department = $this->getById($id);
@@ -32,12 +44,20 @@ class DepartmentsRepositoryImp implements DepartmentsRepository
         return $department;
     }
 
+    /**
+     * @param int $id
+     * @return void
+     */
     public function delete(int $id): void
     {
         $department = $this->getById($id);
         $department->delete();
     }
 
+    /**
+     * @param int $id
+     * @return Model
+     */
     public function getById(int $id): Model
     {
         return Department::findOrFail($id);
